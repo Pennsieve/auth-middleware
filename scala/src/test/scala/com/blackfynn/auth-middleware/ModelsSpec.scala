@@ -1,22 +1,22 @@
-// Copyright (c) 2019 Blackfynn, Inc. All Rights Reserved.
+// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
 
-package com.blackfynn.auth.middleware
+package com.pennsieve.auth.middleware
 
 import io.circe.parser.decode
 import io.circe.syntax._
 import shapeless.syntax.inject._
-import com.blackfynn.models.Role
-import com.blackfynn.models.Feature.ConceptsFeature
-import com.blackfynn.auth.middleware._
-import com.blackfynn.auth.middleware.DatasetPermission._
-import com.blackfynn.auth.middleware.Jwt.{
+import com.pennsieve.models.Role
+import com.pennsieve.models.Feature.ConceptsFeature
+import com.pennsieve.auth.middleware._
+import com.pennsieve.auth.middleware.DatasetPermission._
+import com.pennsieve.auth.middleware.Jwt.{
   DatasetRole,
   OrganizationRole,
   WorkspaceRole
 }
-import com.blackfynn.auth.middleware.Session
-import com.blackfynn.auth.middleware.Jwt.Role.RoleIdentifier
-import com.blackfynn.auth.middleware.Resources.readClaim
+import com.pennsieve.auth.middleware.Session
+import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
+import com.pennsieve.auth.middleware.Resources.readClaim
 import org.scalatest.{ Matchers, WordSpec }
 
 class ModelsSpec extends WordSpec with Matchers {

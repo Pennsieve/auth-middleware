@@ -1,11 +1,11 @@
-// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
+// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
 
-package com.blackfynn.auth.middleware.cli
+package com.pennsieve.auth.middleware.cli
 
-import com.blackfynn.auth.middleware.Jwt.{ Claim, Config, Token }
-import com.blackfynn.auth.middleware.Jwt.Claim._
-import com.blackfynn.auth.middleware.Jwt.Role.RoleIdentifier
-import com.blackfynn.auth.middleware.{
+import com.pennsieve.auth.middleware.Jwt.{ Claim, Config, Token }
+import com.pennsieve.auth.middleware.Jwt.Claim._
+import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
+import com.pennsieve.auth.middleware.{
   DatasetId,
   DatasetNodeId,
   Identifier,
@@ -14,8 +14,8 @@ import com.blackfynn.auth.middleware.{
   UserId,
   Wildcard
 }
-import com.blackfynn.models.{ Feature, Role => PennsieveRole }
-import com.blackfynn.models.Role._
+import com.pennsieve.models.{ Feature, Role => PennsieveRole }
+import com.pennsieve.models.Role._
 import org.rogach.scallop._
 import io.circe._
 import io.circe.parser._

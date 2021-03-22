@@ -1,16 +1,16 @@
-// Copyright (c) 2019 Blackfynn, Inc. All Rights Reserved.
+// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
 
-package com.blackfynn.auth.middleware
+package com.pennsieve.auth.middleware
 
-import com.blackfynn.models.Role
-import com.blackfynn.auth.middleware.Jwt.{
+import com.pennsieve.models.Role
+import com.pennsieve.auth.middleware.Jwt.{
   Claim,
   Config,
   DatasetRole,
   OrganizationRole,
   Token
 }
-import com.blackfynn.auth.middleware.Jwt.Role.RoleIdentifier
+import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
 
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.{ Authorization, OAuth2BearerToken }

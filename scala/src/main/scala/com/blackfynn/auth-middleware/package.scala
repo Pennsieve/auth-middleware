@@ -1,6 +1,6 @@
-// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
+// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
 
-package com.blackfynn.auth
+package com.pennsieve.auth
 
 import io.circe.generic.extras._
 

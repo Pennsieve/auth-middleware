@@ -1,23 +1,23 @@
-// Copyright (c) 2019 Blackfynn, Inc. All Rights Reserved.
+// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
 
-package com.blackfynn.auth.middleware
+package com.pennsieve.auth.middleware
 
-import com.blackfynn.models.Role
-import com.blackfynn.auth.middleware._
-import com.blackfynn.auth.middleware.DatasetPermission._
-import com.blackfynn.auth.middleware.Jwt.{
+import com.pennsieve.models.Role
+import com.pennsieve.auth.middleware._
+import com.pennsieve.auth.middleware.DatasetPermission._
+import com.pennsieve.auth.middleware.Jwt.{
   DatasetRole,
   OrganizationRole,
   WorkspaceRole
 }
-import com.blackfynn.auth.middleware.Jwt.Role.RoleIdentifier
-import com.blackfynn.auth.middleware.WorkspacePermission.{
+import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
+import com.pennsieve.auth.middleware.WorkspacePermission.{
   ManageQueries,
   ViewDashboard
 }
-import com.blackfynn.auth.middleware.Resources.readClaim
-import com.blackfynn.models.Feature
-import com.blackfynn.utilities.circe._
+import com.pennsieve.auth.middleware.Resources.readClaim
+import com.pennsieve.models.Feature
+import com.pennsieve.utilities.circe._
 import io.circe.generic.auto._
 import io.circe._
 import io.circe.parser._

@@ -1,17 +1,17 @@
-// Copyright (c) 2019 Blackfynn, Inc. All Rights Reserved.
+// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
 
-package com.blackfynn.auth.middleware
+package com.pennsieve.auth.middleware
 
-import com.blackfynn.auth.middleware.Extractor._
-import com.blackfynn.auth.middleware.Jwt.Role.RoleIdentifier
-import com.blackfynn.auth.middleware.Jwt.{
+import com.pennsieve.auth.middleware.Extractor._
+import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
+import com.pennsieve.auth.middleware.Jwt.{
   Claim,
   DatasetRole,
   OrganizationRole,
   WorkspaceRole
 }
-import com.blackfynn.models.Feature.{ ConceptsFeature }
-import com.blackfynn.models.{ Feature, Role }
+import com.pennsieve.models.Feature.{ ConceptsFeature }
+import com.pennsieve.models.{ Feature, Role }
 import org.scalatest.{ Matchers, WordSpec }
 import shapeless.syntax.inject._
 
