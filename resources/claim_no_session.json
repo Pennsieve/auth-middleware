@@ -1,0 +1,25 @@
+{
+  "id" : 1,
+  "roles" : [
+    {
+      "id" : 1,
+       "role" : "owner",
+       "encryption_key_id" : null,
+       "node_id" : null,
+       "enabled_features" : null,
+       "type" : "organization_role"
+   },
+   {
+       "id" : 2,
+       "role" : "owner",
+       "node_id" : null,
+       "type" : "dataset_role"
+   },
+   {
+       "id" : 3,
+       "role" : "owner",
+       "type" : "workspace_role"
+   }
+  ],
+  "type" : "user_claim"
+}

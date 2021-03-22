@@ -1,0 +1,22 @@
+version: '3.5'
+services:
+  auth_middleware_test:
+    image: pennsieve/auth_middleware-test:${VERSION}
+    build:
+      context: .
+      dockerfile: test/Dockerfile
+    networks:
+      - auth_middleware
+    command: ["pytest"]
+  auth_middleware:
+    image: pennsieve/auth_middleware:${VERSION}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PENNSIEVE_NEXUS_USER
+      - PENNSIEVE_NEXUS_PW
+    command: ["twine", "upload", "dist/*", "--repository-url", "https://nexus.pennsieve.cc/repository/pypi-prod/", "-u", "${PENNSIEVE_NEXUS_USER}", "-p", "${PENNSIEVE_NEXUS_PW}"]
+networks:
+  auth_middleware:
+    name: auth_middleware

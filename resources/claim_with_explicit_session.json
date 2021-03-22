@@ -1,0 +1,29 @@
+{
+  "id" : 1,
+  "roles" : [
+      {
+          "id" : 1,
+          "role" : "owner",
+          "encryption_key_id" : null,
+          "node_id" : null,
+          "enabled_features" : null,
+          "type" : "organization_role"
+      },
+      {
+          "id" : 2,
+          "role" : "owner",
+          "node_id" : null,
+          "type" : "dataset_role"
+      },
+      {
+          "id" : 3,
+          "role" : "owner",
+          "type" : "workspace_role"
+      }
+  ],
+  "session" : {
+    "id": "60e5aea3-1853-4a3f-8bd5-31822868cf41",
+    "type": "api"
+  },
+  "type" : "user_claim"
+}

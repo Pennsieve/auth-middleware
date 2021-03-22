@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "roles": [
+    {
+      "id": "*",
+      "role": "owner",
+      "type": "organization_role"
+    }
+  ],
+  "type": "user_claim"
+}

@@ -1,0 +1,10 @@
+{
+  "roles": [
+    {
+      "id": "*",
+      "role": "owner",
+      "type": "organization_role"
+    }
+  ],
+  "type": "service_claim"
+}

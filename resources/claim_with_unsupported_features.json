@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "roles": [
+    {
+      "id": "1",
+      "role": "owner",
+      "type": "organization_role",
+      "enabled_features": ["unsupported_feature"]
+    }
+  ],
+"type": "user_claim"
+}

@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "roles": [
+    {
+      "id": "*",
+      "role": "owner",
+      "type": "organization_role"
+    }
+  ],
+  "node_id" : "N:user:d39c79c0-1fbb-4b3e-aab1-77323d965101",
+  "type": "user_claim"
+}

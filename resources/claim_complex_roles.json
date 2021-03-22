@@ -1,0 +1,20 @@
+{
+  "id": 1,
+  "roles": [
+    {
+      "id": "*",
+      "role": "owner",
+      "type": "organization_role"
+    }, {
+      "id": 123,
+      "role": "owner",
+      "node_id": "N:dataset:38e9544e-3f23-4057-a76a-3e2a4f767e61",
+      "type": "dataset_role"
+    }, {
+      "id": 456,
+      "role": "owner",
+      "type": "workspace_role"
+    }
+  ],
+  "type": "user_claim"
+}
