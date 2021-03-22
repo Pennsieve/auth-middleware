@@ -1,9 +1,9 @@
-// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
+// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
 
-package com.blackfynn.auth.middleware
+package com.pennsieve.auth.middleware
 
-import com.blackfynn.models.Role
-import com.blackfynn.models.Role._
+import com.pennsieve.models.Role
+import com.pennsieve.models.Role._
 
 sealed trait Permission
 

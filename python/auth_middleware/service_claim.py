@@ -14,7 +14,7 @@ def create_service_jwt_token(
     )
     claim = Claim.from_claim_type(data, expiry_in_minutes * 60)
 
-    return claim.encode(config).decode("utf8")
+    return claim.encode(config)
 
 
 def create_service_jwt_header(

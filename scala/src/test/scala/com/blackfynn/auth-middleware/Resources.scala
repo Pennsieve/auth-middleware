@@ -1,6 +1,6 @@
-// Copyright (c) 2019 Blackfynn, Inc. All Rights Reserved.
+// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
 
-package com.blackfynn.auth.middleware
+package com.pennsieve.auth.middleware
 
 import os.{ Path, RelPath }
 

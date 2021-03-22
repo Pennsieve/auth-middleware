@@ -1,6 +1,6 @@
 lazy val akkaHttpVersion = "10.1.11"
-lazy val akkaVersion     = "2.5.31"
-lazy val pennsieveCoreVersion = "bootstrap-SNAPSHOT"
+lazy val akkaVersion     = "2.6.5"
+lazy val pennsieveCoreVersion = "com.pennsieve-SNAPSHOT"
 lazy val circeVersion    = "0.11.1"
 lazy val osLibVersion    = "0.3.3"
 
@@ -11,13 +11,13 @@ lazy val root = (project in file("."))
   .enablePlugins(AutomateHeaderPlugin)
   .settings(
     inThisBuild(List(
-      organization := "com.blackfynn",
+      organization := "com.pennsieve",
       scalaVersion := "2.12.6",
       version := sys.props.get("version").getOrElse("SNAPSHOT")
     )),
     name := "auth-middleware",
     headerLicense := Some(HeaderLicense.Custom(
-      "Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved."
+      "Copyright (c) 2021 University of Pennsylvania. All Rights Reserved."
     )),
     headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment),
     resolvers ++= Seq(
@@ -31,8 +31,8 @@ lazy val root = (project in file("."))
       "com.beachape" %% "enumeratum" % "1.5.13",
       "com.beachape" %% "enumeratum-circe" % "1.5.17",
 
-      "com.blackfynn" %% "core-models" % pennsieveCoreVersion,
-      "com.blackfynn" %% "utilities" % "0.1.10-SNAPSHOT",
+      "com.pennsieve" %% "core-models" % pennsieveCoreVersion,
+      "com.pennsieve" %% "utilities" % "3-cd7539b",
 
       "com.pauldijou" %% "jwt-circe" % "2.1.0",
       "io.circe" %% "circe-core" % circeVersion,
@@ -65,8 +65,8 @@ lazy val root = (project in file("."))
     scalafmtOnCompile := true,
     credentials += Credentials("Sonatype Nexus Repository Manager",
       "nexus.pennsieve.cc",
-      sys.env.getOrElse("PENNSIEVE_NEXUS_USER", "pennsieve-ci"),
-      sys.env.getOrElse("PENNSIEVE_NEXUS_PW", "")
+      sys.env("PENNSIEVE_NEXUS_USER"),
+      sys.env("PENNSIEVE_NEXUS_PW")
     ),
     test in assembly := {},  // Skip running tests during JAR assembly
     assemblyJarPath := {
