@@ -19,8 +19,8 @@ fi
 
 BRANCH=$(git branch | grep \* | cut -d ' ' -f2)
 
-if [ "master" != "$BRANCH" ]; then
-    echo "On branch \"$BRANCH\" - must be on branch \"master\" to release"
+if [ "main" != "$BRANCH" ]; then
+    echo "On branch \"$BRANCH\" - must be on branch \"main\" to release"
     exit 1
 fi
 
@@ -46,7 +46,7 @@ VERSION="$VERSION" make -C scala release
 echo "Committing version $VERSION..."
 git commit -a -m "Version $VERSION"
 
-echo "Pushing $VERSION to \"master\"..."
-git push origin master
+echo "Pushing $VERSION to \"main\"..."
+git push origin main
 
 echo "Done"
