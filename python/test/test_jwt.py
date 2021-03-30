@@ -34,7 +34,7 @@ def test_decode_user_claim_explicit_session():
     data = load_claim("claim_with_explicit_session.json")
     claim = claim_from_dict(data)
     assert isinstance(claim, UserClaim)
-    session = claim.session
+    session = claim.cognito
     assert session.id == "60e5aea3-1853-4a3f-8bd5-31822868cf41"
     assert session.is_api
 
@@ -43,16 +43,7 @@ def test_decode_user_claim_no_explicit_session():
     data = load_claim("claim_no_session.json")
     claim = claim_from_dict(data)
     assert isinstance(claim, UserClaim)
-    assert claim.session is None
-
-
-def test_decode_user_claim_bare_session_id():
-    data = load_claim("claim_with_bare_session_id.json")
-    claim = claim_from_dict(data)
-    assert isinstance(claim, UserClaim)
-    session = claim.session
-    assert session.id == "60e5aea3-1853-4a3f-8bd5-31822868cf41"
-    assert session.is_browser
+    assert claim.cognito is None
 
 
 # IMPORTANT: THIS TEST IS CRITICAL AND SHOULD NOT BE ARBITRARILY CHANGED

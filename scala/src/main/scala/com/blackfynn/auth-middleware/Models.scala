@@ -4,7 +4,7 @@ package com.pennsieve.auth.middleware
 
 import com.pennsieve.auth.middleware._
 import com.pennsieve.utilities.circe._
-import com.pennsieve.models.Role
+import com.pennsieve.models.{ CognitoId, Role }
 import enumeratum._
 import enumeratum.values._
 import enumeratum.EnumEntry._
@@ -49,32 +49,28 @@ case object Wildcard {
   override def toString: String = symbol
 }
 
-sealed trait Session {
-  val id: String
+sealed trait CognitoSession {
+  val id: CognitoId
 
   def isBrowser: Boolean = this match {
-    case _: Session.Browser => true
+    case _: CognitoSession.Browser => true
     case _ => false
   }
 
   def isAPI: Boolean = this match {
-    case _: Session.API => true
-    case _ => false
-  }
-
-  def isTemporary: Boolean = this match {
-    case _: Session.Temporary => true
+    case _: CognitoSession.API => true
     case _ => false
   }
 }
 
-object Session {
-  implicit def sessionEncoder: Encoder[Session] = deriveEncoder[Session]
-  implicit def sessionDecoder: Decoder[Session] = deriveDecoder[Session]
+object CognitoSession {
+  implicit def cognitoSessionEncoder: Encoder[CognitoSession] =
+    deriveEncoder[CognitoSession]
+  implicit def cognitoSessionDecoder: Decoder[CognitoSession] =
+    deriveDecoder[CognitoSession]
 
-  case class Browser(override val id: String) extends Session
-  case class API(override val id: String) extends Session
-  case class Temporary(override val id: String) extends Session
+  case class Browser(id: CognitoId.UserPoolId) extends CognitoSession
+  case class API(id: CognitoId.TokenPoolId) extends CognitoSession
 }
 
 sealed trait ClaimType {
@@ -89,33 +85,13 @@ object ClaimType {
 case class UserClaim(
   id: UserId,
   roles: List[Jwt.Role],
-  session: Option[Session] = None,
+  cognito: Option[CognitoSession] = None,
   node_id: Option[UserNodeId] = None
 ) extends ClaimType
 
 object UserClaim {
-
-  private def v2Decoder: Decoder[UserClaim] = deriveDecoder[UserClaim]
-
-  private def v1Decoder: Decoder[UserClaim] = new Decoder[UserClaim] {
-    final def apply(c: HCursor): Decoder.Result[UserClaim] =
-      for {
-        id <- c.downField("id").as[UserId]
-        roles <- c.downField("roles").as[List[Jwt.Role]]
-        session <- c.downField("session").as[String]
-        node_id <- c.downField("node_id").as[Option[UserNodeId]]
-      } yield
-        UserClaim(
-          id = id,
-          roles = roles,
-          session = Some(Session.Browser(session)), // default to a browser session
-          node_id = node_id
-        )
-  }
-
   implicit def userClaimEncoder: Encoder[UserClaim] = deriveEncoder[UserClaim]
-  implicit def userClaimDecoder: Decoder[UserClaim] =
-    List(v2Decoder, v1Decoder).reduceLeft(_ or _)
+  implicit def userClaimDecoder: Decoder[UserClaim] = deriveDecoder[UserClaim]
 }
 
 case class ServiceClaim(roles: List[Jwt.Role]) extends ClaimType

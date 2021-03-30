@@ -14,38 +14,30 @@ import com.pennsieve.auth.middleware.Jwt.{
   OrganizationRole,
   WorkspaceRole
 }
-import com.pennsieve.auth.middleware.Session
 import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
 import com.pennsieve.auth.middleware.Resources.readClaim
 import org.scalatest.{ Matchers, WordSpec }
 
 class ModelsSpec extends WordSpec with Matchers {
 
-  "session types" should {
-    "encode browser type" in {
+  "cognito accounts" should {
+    "encode user login" in {
       val json = readClaim("claim_browser_type.json")
-      val session = decode[Session](json).right.get
+      val session = decode[CognitoSession](json).right.get
       session.isBrowser should be(true)
-      session.isInstanceOf[Session.Browser] should be(true)
+      session.isInstanceOf[CognitoSession.Browser] should be(true)
     }
 
     "encode API type" in {
       val json = readClaim("claim_api_type.json")
-      val session = decode[Session](json).right.get
+      val session = decode[CognitoSession](json).right.get
       session.isAPI should be(true)
-      session.isInstanceOf[Session.API] should be(true)
-    }
-
-    "encode temporary type" in {
-      val json = readClaim("claim_temporary_type.json")
-      val session = decode[Session](json).right.get
-      session.isTemporary should be(true)
-      session.isInstanceOf[Session.Temporary] should be(true)
+      session.isInstanceOf[CognitoSession.API] should be(true)
     }
 
     "reject invalid type" in {
       val json = readClaim("claim_invalid_type.json")
-      decode[Session](json).isLeft should be(true)
+      decode[CognitoSession](json).isLeft should be(true)
     }
   }
 
