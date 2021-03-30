@@ -82,11 +82,9 @@ class WorskpacePermission(Permission):
     VIEW_DASHBOARD = "view_dashboard"
 
 
-class SessionType(ModelType):
+class CognitoSessionType(ModelType):
     BROWSER = "browser"
     API = "api"
-    TEMPORARY = "temporary"
-
 
 class Role(ModelType):
     ORGANIZATION_ROLE = "organization_role"

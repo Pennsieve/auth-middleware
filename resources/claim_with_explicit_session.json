@@ -21,7 +21,7 @@
           "type" : "workspace_role"
       }
   ],
-  "session" : {
+  "cognito" : {
     "id": "60e5aea3-1853-4a3f-8bd5-31822868cf41",
     "type": "api"
   },

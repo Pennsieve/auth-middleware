@@ -7,35 +7,29 @@ from dataclasses_json import dataclass_json
 from . import JwtConfig
 from .utils import clean_dict
 from .role import role_from_dict, Role, Id, OrganizationId, DatasetId, WorkspaceId
-from .models import SessionType, Permission, FeatureFlag, Role as PennsieveRole
+from .models import CognitoSessionType, Permission, FeatureFlag, Role as PennsieveRole
 
 
-def session_from_data(data) -> Optional["Session"]:
-    if isinstance(data, str):
-        return Session(id=data, type=SessionType.BROWSER)
-    elif isinstance(data, dict):
-        if data["type"] in SessionType.values():
-            return Session.from_json(json.dumps(data))  # type: ignore
+def cognito_session_from_data(data) -> Optional["CognitoSession"]:
+    if isinstance(data, dict):
+        if data["type"] in CognitoSessionType.values():
+            return CognitoSession.from_json(json.dumps(data))  # type: ignore
     return None
 
 
 @dataclass_json
 @dataclass
-class Session:
+class CognitoSession:
     id: str
-    type: SessionType
+    type: CognitoSessionType
 
     @property
     def is_browser(self):
-        return self.type == SessionType.BROWSER
+        return self.type == CognitoSessionType.BROWSER
 
     @property
     def is_api(self):
-        return self.type == SessionType.API
-
-    @property
-    def is_temporary(self):
-        return self.type == SessionType.TEMPORARY
+        return self.type == CognitoSessionType.API
 
 
 @dataclass_json
@@ -51,8 +45,8 @@ class ClaimType:
 class UserClaim(ClaimType):
     id: int
     type: str = "user_claim"
-    session: Optional[Union[Session, str]] = field(
-        default=None, metadata={"dataclasses_json": {"decoder": session_from_data}}
+    cognito: Optional[Union[CognitoSession, str]] = field(
+        default=None, metadata={"dataclasses_json": {"decoder": cognito_session_from_data}}
     )
     node_id: Optional[str] = None
 

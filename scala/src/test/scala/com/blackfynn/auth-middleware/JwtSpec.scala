@@ -16,7 +16,7 @@ import com.pennsieve.auth.middleware.WorkspacePermission.{
   ViewDashboard
 }
 import com.pennsieve.auth.middleware.Resources.readClaim
-import com.pennsieve.models.Feature
+import com.pennsieve.models.{ CognitoId, Feature }
 import com.pennsieve.utilities.circe._
 import io.circe.generic.auto._
 import io.circe._
@@ -65,33 +65,25 @@ class JwtSpec extends WordSpec with Matchers {
       Jwt.parseClaim(token).right.get.content shouldEqual content
     }
 
-    "decode a user claim with an explicit session present" in {
+    "decode a user claim with an explicit Cognito session present" in {
       val jsonClaim = readClaim("claim_with_explicit_session.json")
       val claim = decode[ClaimType](jsonClaim).right.get
       claim.isInstanceOf[UserClaim] should be(true)
       val userClaim = claim.asInstanceOf[UserClaim]
-      val session = userClaim.session.get
-      session.id should be("60e5aea3-1853-4a3f-8bd5-31822868cf41")
-      session.isAPI should be(true)
+      val cognito = userClaim.cognito.get
+      cognito.id should be(
+        CognitoId
+          .TokenPoolId(UUID.fromString("60e5aea3-1853-4a3f-8bd5-31822868cf41"))
+      )
+      cognito.isAPI should be(true)
     }
 
-    "decode a user claim with no session present" in {
+    "decode a user claim with no Cognito session present" in {
       val jsonClaim = readClaim("claim_no_session.json")
       val claim = decode[ClaimType](jsonClaim).right.get
       claim.isInstanceOf[UserClaim] should be(true)
       val userClaim = claim.asInstanceOf[UserClaim]
-      userClaim.session should be(None)
-    }
-
-    "decode a user claim with a session given as a bare session ID" in {
-      val jsonClaim =
-        readClaim("claim_with_bare_session_id.json")
-      val claim = decode[ClaimType](jsonClaim).right.get
-      claim.isInstanceOf[UserClaim] should be(true)
-      val userClaim = claim.asInstanceOf[UserClaim]
-      val session = userClaim.session.get
-      session.id should be("60e5aea3-1853-4a3f-8bd5-31822868cf41")
-      session.isBrowser should be(true)
+      userClaim.cognito should be(None)
     }
 
     /* IMPORTANT: THIS TEST IS CRITICAL AND SHOULD NOT BE ARBITRARILY CHANGED

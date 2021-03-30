@@ -1,4 +1,4 @@
-from auth_middleware import UserClaim, ServiceClaim, claim_from_dict, session_from_data
+from auth_middleware import UserClaim, ServiceClaim, claim_from_dict, cognito_session_from_data
 from test.utils import load_claim
 from auth_middleware.role import (
     OrganizationRole,
@@ -13,25 +13,19 @@ from auth_middleware.models import RoleType, FeatureFlag
 
 def test_session_browser_type():
     data = load_claim("claim_browser_type.json")
-    session = session_from_data(data)
+    session = cognito_session_from_data(data)
     assert session.is_browser
 
 
 def test_session_api_type():
     data = load_claim("claim_api_type.json")
-    session = session_from_data(data)
+    session = cognito_session_from_data(data)
     assert session.is_api
-
-
-def test_session_temporary_type():
-    data = load_claim("claim_temporary_type.json")
-    session = session_from_data(data)
-    assert session.is_temporary
 
 
 def test_reject_invalid_type():
     data = load_claim("claim_invalid_type.json")
-    session = session_from_data(data)
+    session = cognito_session_from_data(data)
     assert session is None
 
 
