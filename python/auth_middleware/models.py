@@ -94,7 +94,6 @@ class Role(ModelType):
 
 
 class RoleType(ModelType):
-    BLIND_REVIEWER = "blind_reviewer"
     VIEWER = "viewer"
     EDITOR = "editor"
     MANAGER = "manager"
@@ -112,8 +111,7 @@ class RoleType(ModelType):
 
     @classmethod
     def role_permissions(cls):
-        blind_reviewer = []
-        viewer = blind_reviewer + [
+        viewer = [
             OrganizationLevelPermission.CREATE_DATASET_FROM_TEMPLATE,
             DatasetPermission.VIEW_GRAPH_SCHEMA,
             DatasetPermission.VIEW_FILES,
@@ -174,7 +172,6 @@ class RoleType(ModelType):
             DatasetPermission.REQUEST_CANCEL_PUBLISH_REVISE,
         ]
         return {
-            cls.BLIND_REVIEWER: blind_reviewer,
             cls.VIEWER: viewer,
             cls.EDITOR: editor,
             cls.MANAGER: manager,
