@@ -73,8 +73,6 @@ object WorkspacePermission {
 
 object Permission {
   private def rolePermissions(role: Role): Set[Permission] = role match {
-    case BlindReviewer => Set()
-
     case Viewer =>
       Set(
         OrganizationLevelPermission.CreateDatasetFromTemplate,
