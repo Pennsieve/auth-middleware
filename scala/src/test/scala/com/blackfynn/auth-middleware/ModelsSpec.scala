@@ -4,6 +4,7 @@ package com.pennsieve.auth.middleware
 
 import io.circe.parser.decode
 import io.circe.syntax._
+import io.circe.HCursor
 import shapeless.syntax.inject._
 import com.pennsieve.models.Role
 import com.pennsieve.models.Feature.ConceptsFeature
@@ -17,15 +18,22 @@ import com.pennsieve.auth.middleware.Jwt.{
 import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
 import com.pennsieve.auth.middleware.Resources.readClaim
 import org.scalatest.{ Matchers, WordSpec }
+import java.time.Instant
 
 class ModelsSpec extends WordSpec with Matchers {
 
   "cognito accounts" should {
-    "encode user login" in {
+
+    "encode and decode user login" in {
       val json = readClaim("claim_browser_type.json")
       val session = decode[CognitoSession](json).right.get
       session.isBrowser should be(true)
       session.isInstanceOf[CognitoSession.Browser] should be(true)
+      session.exp.toString should be("2021-04-13T18:37:24Z")
+      val json2 = session.asJson
+      //the expiration should be encoded in timestamp format
+      val cursor: HCursor = json2.hcursor
+      cursor.downField("exp").as[Int].right.get shouldBe (1618339044)
     }
 
     "encode API type" in {
