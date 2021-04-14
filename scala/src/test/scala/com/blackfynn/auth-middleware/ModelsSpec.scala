@@ -4,6 +4,7 @@ package com.pennsieve.auth.middleware
 
 import io.circe.parser.decode
 import io.circe.syntax._
+import io.circe.HCursor
 import shapeless.syntax.inject._
 import com.pennsieve.models.Role
 import com.pennsieve.models.Feature.ConceptsFeature
@@ -30,7 +31,9 @@ class ModelsSpec extends WordSpec with Matchers {
       session.isInstanceOf[CognitoSession.Browser] should be(true)
       session.exp.toString should be("2021-04-13T18:37:24Z")
       val json2 = session.asJson
-      json2 shouldBe json
+      //the expiration should be encoded in timestamp format
+      val cursor: HCursor = json2.hcursor
+      cursor.downField("exp").as[Int].right.get shouldBe (1618339044)
     }
 
     "encode API type" in {
