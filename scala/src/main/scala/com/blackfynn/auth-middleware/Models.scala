@@ -82,7 +82,7 @@ object CognitoSession {
         .catchNonFatal {
           Instant.ofEpochSecond(instantCode)
         }
-        .leftMap(t => "Decoder[Instant]")
+        .leftMap(t => "exp")
     }
 
   implicit val instantEncoder: Encoder[Instant] =

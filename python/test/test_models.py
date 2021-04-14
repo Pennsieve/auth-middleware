@@ -9,12 +9,15 @@ from auth_middleware.role import (
     WorkspaceId,
 )
 from auth_middleware.models import RoleType, FeatureFlag
+import datetime
 
 
 def test_session_browser_type():
     data = load_claim("claim_browser_type.json")
     session = cognito_session_from_data(data)
     assert session.is_browser
+    assert session.exp == datetime.datetime(2021, 4, 13, 14, 37, 24, tzinfo=datetime.timezone(
+        datetime.timedelta(days=-1, seconds=72000), 'EDT'))
 
 
 def test_session_api_type():
