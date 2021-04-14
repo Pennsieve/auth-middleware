@@ -22,7 +22,7 @@ def cognito_session_from_data(data) -> Optional["CognitoSession"]:
 class CognitoSession:
     id: str
     type: CognitoSessionType
-    expiration: datetime.datetime
+    exp: datetime.datetime
 
     @property
     def is_browser(self):

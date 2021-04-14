@@ -18,6 +18,8 @@ import io.circe.generic.extras.auto._
 import io.circe.generic.extras.semiauto._
 import io.circe.syntax._
 
+import cats.implicits._
+
 import scala.collection.immutable
 import scala.language.experimental.macros
 
@@ -55,7 +57,7 @@ case object Wildcard {
 
 sealed trait CognitoSession {
   val id: CognitoId
-  val expiration: Instant
+  val exp: Instant
 
   def isBrowser: Boolean = this match {
     case _: CognitoSession.Browser => true
@@ -76,13 +78,19 @@ object CognitoSession {
 
   implicit def instantDecoder: Decoder[Instant] =
     Decoder.decodeInt.emap { instantCode =>
-      Right(Instant.ofEpochMilli(instantCode))
+      Either
+        .catchNonFatal {
+          Instant.ofEpochSecond(instantCode)
+        }
+        .leftMap(t => "Decoder[Instant]")
     }
 
-  case class Browser(id: CognitoId.UserPoolId, expiration: Instant)
+  implicit val instantEncoder: Encoder[Instant] =
+    Encoder.instance(time => Json.fromLong(time.toEpochMilli / 1000))
+
+  case class Browser(id: CognitoId.UserPoolId, exp: Instant)
       extends CognitoSession
-  case class API(id: CognitoId.TokenPoolId, expiration: Instant)
-      extends CognitoSession
+  case class API(id: CognitoId.TokenPoolId, exp: Instant) extends CognitoSession
 }
 
 sealed trait ClaimType {

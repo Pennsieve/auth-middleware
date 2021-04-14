@@ -23,11 +23,14 @@ class ModelsSpec extends WordSpec with Matchers {
 
   "cognito accounts" should {
 
-    "encode user login" in {
+    "encode and decode user login" in {
       val json = readClaim("claim_browser_type.json")
       val session = decode[CognitoSession](json).right.get
       session.isBrowser should be(true)
       session.isInstanceOf[CognitoSession.Browser] should be(true)
+      session.exp.toString should be("2021-04-13T18:37:24Z")
+      val json2 = session.asJson
+      json2 shouldBe json
     }
 
     "encode API type" in {
