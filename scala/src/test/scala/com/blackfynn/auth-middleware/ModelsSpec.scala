@@ -17,10 +17,12 @@ import com.pennsieve.auth.middleware.Jwt.{
 import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
 import com.pennsieve.auth.middleware.Resources.readClaim
 import org.scalatest.{ Matchers, WordSpec }
+import java.time.Instant
 
 class ModelsSpec extends WordSpec with Matchers {
 
   "cognito accounts" should {
+
     "encode user login" in {
       val json = readClaim("claim_browser_type.json")
       val session = decode[CognitoSession](json).right.get

@@ -2,17 +2,21 @@
 
 package com.pennsieve.auth.middleware
 
+import java.time.Instant
+
 import com.pennsieve.auth.middleware._
 import com.pennsieve.utilities.circe._
 import com.pennsieve.models.{ CognitoId, Role }
 import enumeratum._
 import enumeratum.values._
 import enumeratum.EnumEntry._
+
 import io.circe.Decoder.Result
 import io.circe._
 import io.circe.shapes._
 import io.circe.generic.extras.auto._
 import io.circe.generic.extras.semiauto._
+import io.circe.syntax._
 
 import scala.collection.immutable
 import scala.language.experimental.macros
@@ -51,6 +55,7 @@ case object Wildcard {
 
 sealed trait CognitoSession {
   val id: CognitoId
+  val expiration: Instant
 
   def isBrowser: Boolean = this match {
     case _: CognitoSession.Browser => true
@@ -69,8 +74,15 @@ object CognitoSession {
   implicit def cognitoSessionDecoder: Decoder[CognitoSession] =
     deriveDecoder[CognitoSession]
 
-  case class Browser(id: CognitoId.UserPoolId) extends CognitoSession
-  case class API(id: CognitoId.TokenPoolId) extends CognitoSession
+  implicit def instantDecoder: Decoder[Instant] =
+    Decoder.decodeInt.emap { instantCode =>
+      Right(Instant.ofEpochMilli(instantCode))
+    }
+
+  case class Browser(id: CognitoId.UserPoolId, expiration: Instant)
+      extends CognitoSession
+  case class API(id: CognitoId.TokenPoolId, expiration: Instant)
+      extends CognitoSession
 }
 
 sealed trait ClaimType {
