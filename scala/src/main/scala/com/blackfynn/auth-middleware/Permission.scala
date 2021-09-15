@@ -42,6 +42,8 @@ object DatasetPermission {
   case object ShowSettingsPage extends Permission
   case object ViewExternalPublications extends Permission
   case object ManageExternalPublications extends Permission
+  case object ViewWebhooks extends Permission
+  case object ManageWebhooks extends Permission
 }
 
 object OrganizationLevelPermission {
@@ -84,6 +86,7 @@ object Permission {
         DatasetPermission.ManageDiscussionComments,
         DatasetPermission.ViewDiscussionComments,
         DatasetPermission.ViewExternalPublications,
+        DatasetPermission.ViewWebhooks,
         ClinicalTrialPermission.TrialOverview,
         ClinicalTrialPermission.ViewParticipants,
         ClinicalTrialPermission.ViewSubmissionData,
@@ -124,6 +127,7 @@ object Permission {
         DatasetPermission.ReserveDoi,
         DatasetPermission.ManageDatasetCollections,
         DatasetPermission.ManageExternalPublications,
+        DatasetPermission.ManageWebhooks,
         ClinicalTrialPermission.ShowSettingsPage,
         ClinicalTrialPermission.ManageModels,
         ClinicalTrialPermission.ManageSites,

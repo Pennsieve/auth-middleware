@@ -16,7 +16,7 @@ build/
 dist/
 .mypy_cache/
 python/resources/
-
+python/pyproject.toml
 
 ### Scala ###
 *.class
