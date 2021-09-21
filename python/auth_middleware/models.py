@@ -57,6 +57,8 @@ class DatasetPermission(Permission):
     SHOW_SETTINGS_PAGE = "show_settings_page"
     VIEW_EXTERNAL_PUBLICATIONS = "view_external_publications"
     MANAGE_EXTERNAL_PUBLICATIONS = "manage_external_publications"
+    VIEW_WEBHOOKS = "view_webhooks"
+    MANAGE_WEBHOOKS = "manage_webhooks"
 
 
 class ClinicalTrialPermission(Permission):
@@ -121,6 +123,7 @@ class RoleType(ModelType):
             DatasetPermission.MANAGE_DISCUSSION_COMMENTS,
             DatasetPermission.VIEW_DISCUSSION_COMMENTS,
             DatasetPermission.VIEW_EXTERNAL_PUBLICATIONS,
+            DatasetPermission.VIEW_WEBHOOKS,
             ClinicalTrialPermission.TRIAL_OVERVIEW,
             ClinicalTrialPermission.VIEW_PARTICIPANTS,
             ClinicalTrialPermission.VIEW_SUBMISSION_DATA,
@@ -159,6 +162,7 @@ class RoleType(ModelType):
             DatasetPermission.MANAGE_DATASET_COLLECTIONS,
             DatasetPermission.MANAGE_EXTERNAL_PUBLICATIONS,
             DatasetPermission.REQUEST_REVISE,
+            DatasetPermission.MANAGE_WEBHOOKS,
             ClinicalTrialPermission.SHOW_SETTINGS_PAGE,
             ClinicalTrialPermission.MANAGE_MODELS,
             ClinicalTrialPermission.MANAGE_SITES,
