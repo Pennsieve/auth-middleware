@@ -64,7 +64,7 @@ object Permission {
         DatasetPermission.ManageDiscussionComments,
         DatasetPermission.ViewDiscussionComments,
         DatasetPermission.ViewExternalPublications,
-        DatasetPermission.ViewWebhooks,
+        DatasetPermission.ViewWebhooks
       )
     case Editor =>
       rolePermissions(Viewer) ++ Set(
@@ -76,7 +76,7 @@ object Permission {
         DatasetPermission.ManageRecordRelationships,
         DatasetPermission.ManageAnnotations,
         DatasetPermission.ManageAnnotationLayers,
-        DatasetPermission.TriggerCustomEvents,
+        DatasetPermission.TriggerCustomEvents
       )
     case Manager =>
       rolePermissions(Editor) ++ Set(
@@ -95,7 +95,7 @@ object Permission {
         DatasetPermission.ReserveDoi,
         DatasetPermission.ManageDatasetCollections,
         DatasetPermission.ManageExternalPublications,
-        DatasetPermission.ManageWebhooks,
+        DatasetPermission.ManageWebhooks
       )
     case Owner =>
       rolePermissions(Manager) ++ Set(
