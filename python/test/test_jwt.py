@@ -11,7 +11,6 @@ from auth_middleware.models import (
     FeatureFlag,
     RoleType,
     DatasetPermission,
-    WorskpacePermission,
 )
 from test.utils import load_claim, config
 

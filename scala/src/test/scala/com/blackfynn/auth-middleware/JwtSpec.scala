@@ -337,70 +337,70 @@ class JwtSpec extends WordSpec with Matchers {
       Validator.hasDatasetAccess(claim, DatasetId(3), ViewFiles) shouldEqual false
     }
 
-    "handle a claim with workspace access and valid permissions" in {
-      val claim = Jwt.Claim(
-        content = ServiceClaim(
-          List(
-            OrganizationRole(
-              OrganizationId(1).inject[RoleIdentifier[OrganizationId]],
-              Role.Owner
-            ),
-            WorkspaceRole(
-              WorkspaceId(3).inject[RoleIdentifier[WorkspaceId]],
-              Role.Editor
-            )
-          )
-        ),
-        expiration = Instant.now.plusSeconds(10.seconds.toSeconds)
-      )
+//    "handle a claim with workspace access and valid permissions" in {
+//      val claim = Jwt.Claim(
+//        content = ServiceClaim(
+//          List(
+//            OrganizationRole(
+//              OrganizationId(1).inject[RoleIdentifier[OrganizationId]],
+//              Role.Owner
+//            ),
+//            WorkspaceRole(
+//              WorkspaceId(3).inject[RoleIdentifier[WorkspaceId]],
+//              Role.Editor
+//            )
+//          )
+//        ),
+//        expiration = Instant.now.plusSeconds(10.seconds.toSeconds)
+//      )
+//
+//      Validator.hasWorkspaceAccess(claim, WorkspaceId(3), ViewDashboard) shouldEqual true
+//    }
 
-      Validator.hasWorkspaceAccess(claim, WorkspaceId(3), ViewDashboard) shouldEqual true
-    }
+//    "handle a claim with workspace access but invalid permissions" in {
+//      val claim = Jwt.Claim(
+//        content = ServiceClaim(
+//          List(
+//            OrganizationRole(
+//              OrganizationId(1).inject[RoleIdentifier[OrganizationId]],
+//              Role.Owner
+//            ),
+//            DatasetRole(
+//              DatasetId(2).inject[RoleIdentifier[DatasetId]],
+//              Role.Viewer
+//            ),
+//            WorkspaceRole(
+//              WorkspaceId(3).inject[RoleIdentifier[WorkspaceId]],
+//              Role.Editor
+//            )
+//          )
+//        ),
+//        expiration = Instant.now.plusSeconds(10.seconds.toSeconds)
+//      )
+//      Validator.hasWorkspaceAccess(claim, WorkspaceId(3), ManageQueries) shouldEqual false
+//    }
 
-    "handle a claim with workspace access but invalid permissions" in {
-      val claim = Jwt.Claim(
-        content = ServiceClaim(
-          List(
-            OrganizationRole(
-              OrganizationId(1).inject[RoleIdentifier[OrganizationId]],
-              Role.Owner
-            ),
-            DatasetRole(
-              DatasetId(2).inject[RoleIdentifier[DatasetId]],
-              Role.Viewer
-            ),
-            WorkspaceRole(
-              WorkspaceId(3).inject[RoleIdentifier[WorkspaceId]],
-              Role.Editor
-            )
-          )
-        ),
-        expiration = Instant.now.plusSeconds(10.seconds.toSeconds)
-      )
-      Validator.hasWorkspaceAccess(claim, WorkspaceId(3), ManageQueries) shouldEqual false
-    }
-
-    "handle a claim with workspace access and valid permissions but incorrect workspace" in {
-      val claim = Jwt.Claim(
-        content = ServiceClaim(
-          List(
-            OrganizationRole(
-              OrganizationId(1).inject[RoleIdentifier[OrganizationId]],
-              Role.Owner
-            ),
-            DatasetRole(
-              DatasetId(2).inject[RoleIdentifier[DatasetId]],
-              Role.Editor
-            ),
-            WorkspaceRole(
-              WorkspaceId(3).inject[RoleIdentifier[WorkspaceId]],
-              Role.Owner
-            )
-          )
-        ),
-        expiration = Instant.now.plusSeconds(10.seconds.toSeconds)
-      )
-      Validator.hasWorkspaceAccess(claim, WorkspaceId(4), ViewDashboard) shouldEqual false
-    }
+//    "handle a claim with workspace access and valid permissions but incorrect workspace" in {
+//      val claim = Jwt.Claim(
+//        content = ServiceClaim(
+//          List(
+//            OrganizationRole(
+//              OrganizationId(1).inject[RoleIdentifier[OrganizationId]],
+//              Role.Owner
+//            ),
+//            DatasetRole(
+//              DatasetId(2).inject[RoleIdentifier[DatasetId]],
+//              Role.Editor
+//            ),
+//            WorkspaceRole(
+//              WorkspaceId(3).inject[RoleIdentifier[WorkspaceId]],
+//              Role.Owner
+//            )
+//          )
+//        ),
+//        expiration = Instant.now.plusSeconds(10.seconds.toSeconds)
+//      )
+//      Validator.hasWorkspaceAccess(claim, WorkspaceId(4), ViewDashboard) shouldEqual false
+//    }
   }
 }
