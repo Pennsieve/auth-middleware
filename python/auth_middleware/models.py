@@ -59,6 +59,8 @@ class DatasetPermission(Permission):
     MANAGE_EXTERNAL_PUBLICATIONS = "manage_external_publications"
     VIEW_WEBHOOKS = "view_webhooks"
     MANAGE_WEBHOOKS = "manage_webhooks"
+    TRIGGER_CUSTOM_EVENTS = "trigger_custom_events"
+
 
 
 class ClinicalTrialPermission(Permission):
@@ -139,12 +141,14 @@ class RoleType(ModelType):
             DatasetPermission.MANAGE_RECORD_RELATIONSHIPS,
             DatasetPermission.MANAGE_ANNOTATIONS,
             DatasetPermission.MANAGE_ANNOTATION_LAYERS,
+            DatasetPermission.TRIGGER_CUSTOM_EVENTS,
             ClinicalTrialPermission.CREATE_PARTICIPANT,
             ClinicalTrialPermission.EDIT_PARTICIPANT,
             ClinicalTrialPermission.DELETE_PARTICIPANT,
             ClinicalTrialPermission.ADD_FILES_TO_RECORD,
             ClinicalTrialPermission.LINK_SITE_TO_RECORD,
             ClinicalTrialPermission.CREATE_SUBMISSION_DATA,
+
         ]
         manager = editor + [
             DatasetPermission.MANAGE_GRAPH_SCHEMA,
