@@ -44,33 +44,11 @@ object DatasetPermission {
   case object ManageExternalPublications extends Permission
   case object ViewWebhooks extends Permission
   case object ManageWebhooks extends Permission
+  case object TriggerCustomEvents extends Permission
 }
 
 object OrganizationLevelPermission {
   case object CreateDatasetFromTemplate extends Permission
-}
-
-object ClinicalTrialPermission {
-  case object TrialOverview extends Permission
-  case object ViewParticipants extends Permission
-  case object CreateParticipant extends Permission
-  case object EditParticipant extends Permission
-  case object DeleteParticipant extends Permission
-  case object AddFilesToRecord extends Permission
-  case object LinkSiteToRecord extends Permission
-  case object CreateSubmissionData extends Permission
-  case object ViewSubmissionData extends Permission
-  case object ManageModels extends Permission
-  case object ShowSettingsPage extends Permission
-  case object ManageSites extends Permission
-  case object ViewSites extends Permission
-}
-
-object WorkspacePermission {
-  case object ManageViews extends Permission
-  case object ManageQueries extends Permission
-  case object CreateSnapshot extends Permission
-  case object ViewDashboard extends Permission
 }
 
 object Permission {
@@ -87,11 +65,6 @@ object Permission {
         DatasetPermission.ViewDiscussionComments,
         DatasetPermission.ViewExternalPublications,
         DatasetPermission.ViewWebhooks,
-        ClinicalTrialPermission.TrialOverview,
-        ClinicalTrialPermission.ViewParticipants,
-        ClinicalTrialPermission.ViewSubmissionData,
-        ClinicalTrialPermission.ViewSites,
-        WorkspacePermission.ViewDashboard
       )
     case Editor =>
       rolePermissions(Viewer) ++ Set(
@@ -103,12 +76,7 @@ object Permission {
         DatasetPermission.ManageRecordRelationships,
         DatasetPermission.ManageAnnotations,
         DatasetPermission.ManageAnnotationLayers,
-        ClinicalTrialPermission.CreateParticipant,
-        ClinicalTrialPermission.EditParticipant,
-        ClinicalTrialPermission.DeleteParticipant,
-        ClinicalTrialPermission.AddFilesToRecord,
-        ClinicalTrialPermission.LinkSiteToRecord,
-        ClinicalTrialPermission.CreateSubmissionData
+        DatasetPermission.TriggerCustomEvents,
       )
     case Manager =>
       rolePermissions(Editor) ++ Set(
@@ -128,12 +96,6 @@ object Permission {
         DatasetPermission.ManageDatasetCollections,
         DatasetPermission.ManageExternalPublications,
         DatasetPermission.ManageWebhooks,
-        ClinicalTrialPermission.ShowSettingsPage,
-        ClinicalTrialPermission.ManageModels,
-        ClinicalTrialPermission.ManageSites,
-        WorkspacePermission.ManageViews,
-        WorkspacePermission.ManageQueries,
-        WorkspacePermission.CreateSnapshot
       )
     case Owner =>
       rolePermissions(Manager) ++ Set(
