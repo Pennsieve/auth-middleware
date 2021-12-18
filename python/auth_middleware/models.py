@@ -61,31 +61,6 @@ class DatasetPermission(Permission):
     MANAGE_WEBHOOKS = "manage_webhooks"
     TRIGGER_CUSTOM_EVENTS = "trigger_custom_events"
 
-
-
-class ClinicalTrialPermission(Permission):
-    TRIAL_OVERVIEW = "trial_overview"
-    VIEW_PARTICIPANTS = "view_participants"
-    CREATE_PARTICIPANT = "create_participant"
-    EDIT_PARTICIPANT = "edit_participant"
-    DELETE_PARTICIPANT = "delete_participant"
-    ADD_FILES_TO_RECORD = "add_files_to_record"
-    LINK_SITE_TO_RECORD = "link_site_to_record"
-    CREATE_SUBMISSION_DATA = "create_submission_data"
-    VIEW_SUBMISSION_DATA = "view_submission_data"
-    MANAGE_MODELS = "manage_models"
-    SHOW_SETTINGS_PAGE = "show_settings_page"
-    MANAGE_SITES = "manage_sites"
-    VIEW_SITES = "view_sites"
-
-
-class WorskpacePermission(Permission):
-    MANAGE_VIEWS = "manage_views"
-    MANAGE_QUERIES = "manage_queries"
-    CREATE_SNAPSHOT = "create_snapshot"
-    VIEW_DASHBOARD = "view_dashboard"
-
-
 class CognitoSessionType(ModelType):
     BROWSER = "browser"
     API = "api"
@@ -126,11 +101,6 @@ class RoleType(ModelType):
             DatasetPermission.VIEW_DISCUSSION_COMMENTS,
             DatasetPermission.VIEW_EXTERNAL_PUBLICATIONS,
             DatasetPermission.VIEW_WEBHOOKS,
-            ClinicalTrialPermission.TRIAL_OVERVIEW,
-            ClinicalTrialPermission.VIEW_PARTICIPANTS,
-            ClinicalTrialPermission.VIEW_SUBMISSION_DATA,
-            ClinicalTrialPermission.VIEW_SITES,
-            WorskpacePermission.VIEW_DASHBOARD,
         ]
         editor = viewer + [
             DatasetPermission.CREATE_DELETE_RECORD,
@@ -142,13 +112,6 @@ class RoleType(ModelType):
             DatasetPermission.MANAGE_ANNOTATIONS,
             DatasetPermission.MANAGE_ANNOTATION_LAYERS,
             DatasetPermission.TRIGGER_CUSTOM_EVENTS,
-            ClinicalTrialPermission.CREATE_PARTICIPANT,
-            ClinicalTrialPermission.EDIT_PARTICIPANT,
-            ClinicalTrialPermission.DELETE_PARTICIPANT,
-            ClinicalTrialPermission.ADD_FILES_TO_RECORD,
-            ClinicalTrialPermission.LINK_SITE_TO_RECORD,
-            ClinicalTrialPermission.CREATE_SUBMISSION_DATA,
-
         ]
         manager = editor + [
             DatasetPermission.MANAGE_GRAPH_SCHEMA,
@@ -167,12 +130,6 @@ class RoleType(ModelType):
             DatasetPermission.MANAGE_EXTERNAL_PUBLICATIONS,
             DatasetPermission.REQUEST_REVISE,
             DatasetPermission.MANAGE_WEBHOOKS,
-            ClinicalTrialPermission.SHOW_SETTINGS_PAGE,
-            ClinicalTrialPermission.MANAGE_MODELS,
-            ClinicalTrialPermission.MANAGE_SITES,
-            WorskpacePermission.MANAGE_VIEWS,
-            WorskpacePermission.MANAGE_QUERIES,
-            WorskpacePermission.CREATE_SNAPSHOT,
         ]
         owner = manager + [
             DatasetPermission.TRANSFER_OWNERSHIP,
