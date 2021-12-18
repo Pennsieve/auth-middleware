@@ -11,10 +11,10 @@ import com.pennsieve.auth.middleware.Jwt.{
   WorkspaceRole
 }
 import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
-import com.pennsieve.auth.middleware.WorkspacePermission.{
-  ManageQueries,
-  ViewDashboard
-}
+//import com.pennsieve.auth.middleware.WorkspacePermission.{
+//  ManageQueries,
+//  ViewDashboard
+//}
 import com.pennsieve.auth.middleware.Resources.readClaim
 import com.pennsieve.models.{ CognitoId, Feature }
 import com.pennsieve.utilities.circe._
