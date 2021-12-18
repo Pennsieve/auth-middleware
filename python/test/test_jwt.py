@@ -182,42 +182,42 @@ def test_claim_dataset_access_valid_permissions_wrong_dataset():
     assert not claim.has_dataset_access(DatasetId(3), DatasetPermission.VIEW_FILES)
 
 
-def test_claim_workspace_access_valid_permissions():
-    data = ServiceClaim(
-        [
-            OrganizationRole(id=OrganizationId(1), role=RoleType.OWNER),
-            WorkspaceRole(id=WorkspaceId(3), role=RoleType.EDITOR),
-        ]
-    )
-    claim = Claim.from_claim_type(data, 10)
-    assert claim.has_workspace_access(
-        WorkspaceId(3), WorskpacePermission.VIEW_DASHBOARD
-    )
+# def test_claim_workspace_access_valid_permissions():
+#     data = ServiceClaim(
+#         [
+#             OrganizationRole(id=OrganizationId(1), role=RoleType.OWNER),
+#             WorkspaceRole(id=WorkspaceId(3), role=RoleType.EDITOR),
+#         ]
+#     )
+#     claim = Claim.from_claim_type(data, 10)
+#     assert claim.has_workspace_access(
+#         WorkspaceId(3), WorskpacePermission.VIEW_DASHBOARD
+#     )
 
 
-def test_claim_workspace_access_invalid_permissions():
-    data = ServiceClaim(
-        [
-            OrganizationRole(id=OrganizationId(1), role=RoleType.OWNER),
-            DatasetRole(id=DatasetId(2), role=RoleType.VIEWER),
-            WorkspaceRole(id=WorkspaceId(3), role=RoleType.EDITOR),
-        ]
-    )
-    claim = Claim.from_claim_type(data, 10)
-    assert not claim.has_workspace_access(
-        WorkspaceId(3), WorskpacePermission.MANAGE_VIEWS
-    )
+# def test_claim_workspace_access_invalid_permissions():
+#     data = ServiceClaim(
+#         [
+#             OrganizationRole(id=OrganizationId(1), role=RoleType.OWNER),
+#             DatasetRole(id=DatasetId(2), role=RoleType.VIEWER),
+#             WorkspaceRole(id=WorkspaceId(3), role=RoleType.EDITOR),
+#         ]
+#     )
+#     claim = Claim.from_claim_type(data, 10)
+#     assert not claim.has_workspace_access(
+#         WorkspaceId(3), WorskpacePermission.MANAGE_VIEWS
+#     )
 
 
-def test_claim_workspace_access_valid_permissions_wrong_workspace():
-    data = ServiceClaim(
-        [
-            OrganizationRole(id=OrganizationId(1), role=RoleType.OWNER),
-            DatasetRole(id=DatasetId(2), role=RoleType.EDITOR),
-            WorkspaceRole(id=WorkspaceId(3), role=RoleType.OWNER),
-        ]
-    )
-    claim = Claim.from_claim_type(data, 10)
-    assert not claim.has_workspace_access(
-        WorkspaceId(4), WorskpacePermission.VIEW_DASHBOARD
-    )
+# def test_claim_workspace_access_valid_permissions_wrong_workspace():
+#     data = ServiceClaim(
+#         [
+#             OrganizationRole(id=OrganizationId(1), role=RoleType.OWNER),
+#             DatasetRole(id=DatasetId(2), role=RoleType.EDITOR),
+#             WorkspaceRole(id=WorkspaceId(3), role=RoleType.OWNER),
+#         ]
+#     )
+#     claim = Claim.from_claim_type(data, 10)
+#     assert not claim.has_workspace_access(
+#         WorkspaceId(4), WorskpacePermission.VIEW_DASHBOARD
+#     )
