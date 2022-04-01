@@ -45,6 +45,7 @@ object DatasetPermission {
   case object ViewWebhooks extends Permission
   case object ManageWebhooks extends Permission
   case object TriggerCustomEvents extends Permission
+  case object EditDatasetChangelog extends Permission
 }
 
 object OrganizationLevelPermission {
@@ -95,7 +96,8 @@ object Permission {
         DatasetPermission.ReserveDoi,
         DatasetPermission.ManageDatasetCollections,
         DatasetPermission.ManageExternalPublications,
-        DatasetPermission.ManageWebhooks
+        DatasetPermission.ManageWebhooks,
+        DatasetPermission.EditDatasetChangelog
       )
     case Owner =>
       rolePermissions(Manager) ++ Set(
