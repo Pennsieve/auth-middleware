@@ -1,6 +1,6 @@
 lazy val akkaHttpVersion = "10.1.11"
 lazy val akkaVersion     = "2.6.5"
-lazy val pennsieveCoreVersion = "17-6119d08"
+lazy val pennsieveCoreVersion = "166-27f7fae"
 lazy val circeVersion    = "0.11.1"
 lazy val osLibVersion    = "0.3.3"
 
@@ -23,7 +23,6 @@ lazy val root = (project in file("."))
     resolvers ++= Seq(
       "Pennsieve Releases" at "https://nexus.pennsieve.cc/repository/maven-releases",
       "Pennsieve Snapshots" at "https://nexus.pennsieve.cc/repository/maven-snapshots",
-      Resolver.bintrayRepo("commercetools", "maven"),
       Resolver.sonatypeRepo("releases"),
       Resolver.sonatypeRepo("snapshots")
     ),
@@ -32,7 +31,7 @@ lazy val root = (project in file("."))
       "com.beachape" %% "enumeratum-circe" % "1.5.17",
 
       "com.pennsieve" %% "core-models" % pennsieveCoreVersion,
-      "com.pennsieve" %% "utilities" % "3-cd7539b",
+      "com.pennsieve" %% "utilities" % "4-55953e4",
 
       "com.pauldijou" %% "jwt-circe" % "2.1.0",
       "io.circe" %% "circe-core" % circeVersion,
@@ -68,7 +67,7 @@ lazy val root = (project in file("."))
       sys.env("PENNSIEVE_NEXUS_USER"),
       sys.env("PENNSIEVE_NEXUS_PW")
     ),
-    test in assembly := {},  // Skip running tests during JAR assembly
+    assembly / test := {},  // Skip running tests during JAR assembly
     assemblyJarPath := {
       println(assembly.value.getAbsolutePath)
     }
