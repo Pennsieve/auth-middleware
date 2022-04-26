@@ -1,4 +1,4 @@
 .PHONY: release
 
 release:
-	sbt -Dversion="${VERSION}" publish
+	sbt -Dversion="${VERSION}" +publish

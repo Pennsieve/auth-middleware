@@ -40,7 +40,7 @@ lazy val root = (project in file("."))
     inThisBuild(List(
       organization := "com.pennsieve",
       scalaVersion := scala212,
-      version := sys.props.get("version").getOrElse("SNAPSHOT"),
+      version := sys.props.get("version").getOrElse("bootstrap-SNAPSHOT"),
       crossScalaVersions := supportedScalaVersions,
       scalacOptions ++= Seq(
         "-deprecation",

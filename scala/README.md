@@ -35,20 +35,26 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTc0MjEwNTUsImlhdCI6MTU1NzQxNzQ
 ### Locally for testing
 
 ```bash
-$ sbt publishLocal
+$ sbt +publishLocal
 ```
 
 will build and deploy the jar to your local maven repository.
 
 ### Release
 
-Releases of `auth-middleware` are triggered manually. Run
+Releases of `auth-middleware` are triggered manually. Running
 
 ```bash
-$ sbt release
+$ make release
 ```
 
-and follow the prompts.
+and following the prompts will publish the Scala jars. To release both the Python and Scala code, run
+
+````bash
+$ make release
+````
+
+from the root directory of the repository.
 
 For more information on the release process, see
 https://blackfynn.atlassian.net/wiki/spaces/PLAT/pages/743178258/Publishing+JARs
