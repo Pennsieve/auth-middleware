@@ -8,8 +8,10 @@ import io.circe.HCursor
 import shapeless.syntax.inject._
 import com.pennsieve.models.Role
 import com.pennsieve.models.Feature.ConceptsFeature
-import com.pennsieve.auth.middleware._
-import com.pennsieve.auth.middleware.DatasetPermission._
+// This is only needed for compiling a version that uses Circe 0.11.
+// It can be deleted when only version of Circe required is >= 0.12.
+// (That is, when no longer compiling for Scala 2.12.)
+import com.pennsieve.scala.Compatibility._
 import com.pennsieve.auth.middleware.Jwt.{
   DatasetRole,
   OrganizationRole,
@@ -17,10 +19,12 @@ import com.pennsieve.auth.middleware.Jwt.{
 }
 import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
 import com.pennsieve.auth.middleware.Resources.readClaim
-import org.scalatest.{ Matchers, WordSpec }
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+
 import java.time.Instant
 
-class ModelsSpec extends WordSpec with Matchers {
+class ModelsSpec extends AnyWordSpec with Matchers {
 
   "cognito accounts" should {
 
@@ -65,7 +69,7 @@ class ModelsSpec extends WordSpec with Matchers {
       )
 
       decode[ClaimType](json) shouldBe Right(claim)
-      Jwt.printer.pretty(claim.asJson) shouldBe json.split("\\s+").mkString
+      Jwt.printer.print(claim.asJson) shouldBe json.split("\\s+").mkString
     }
 
     "encode simple user with node id" in {
@@ -84,7 +88,7 @@ class ModelsSpec extends WordSpec with Matchers {
       )
 
       decode[ClaimType](json) shouldBe Right(claim)
-      Jwt.printer.pretty(claim.asJson) shouldBe json.split("\\s+").mkString
+      Jwt.printer.print(claim.asJson) shouldBe json.split("\\s+").mkString
     }
 
     "encode simple service" in {
@@ -100,7 +104,7 @@ class ModelsSpec extends WordSpec with Matchers {
 
       decode[ClaimType](json) shouldBe Right(claim)
 
-      Jwt.printer.pretty(claim.asJson) shouldBe json.split("\\s+").mkString
+      Jwt.printer.print(claim.asJson) shouldBe json.split("\\s+").mkString
     }
 
     "encode complex roles" in {
@@ -132,7 +136,7 @@ class ModelsSpec extends WordSpec with Matchers {
 
       decode[ClaimType](json) shouldBe Right(claim)
 
-      Jwt.printer.pretty(claim.asJson) shouldBe json.split("\\s+").mkString
+      Jwt.printer.print(claim.asJson) shouldBe json.split("\\s+").mkString
     }
 
     "encode dataset roles with locked statue" in {
@@ -167,7 +171,7 @@ class ModelsSpec extends WordSpec with Matchers {
 
       decode[ClaimType](json) shouldBe Right(claim)
 
-      Jwt.printer.pretty(claim.asJson) shouldBe json.split("\\s+").mkString
+      Jwt.printer.print(claim.asJson) shouldBe json.split("\\s+").mkString
     }
 
     "encode organization secret key id for a write organization role" in {
@@ -195,7 +199,7 @@ class ModelsSpec extends WordSpec with Matchers {
 
       decode[ClaimType](json) shouldBe Right(claim)
 
-      Jwt.printer.pretty(claim.asJson) shouldBe json.split("\\s+").mkString
+      Jwt.printer.print(claim.asJson) shouldBe json.split("\\s+").mkString
     }
   }
 }

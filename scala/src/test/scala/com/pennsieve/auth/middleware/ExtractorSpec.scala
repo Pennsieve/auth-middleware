@@ -10,14 +10,15 @@ import com.pennsieve.auth.middleware.Jwt.{
   OrganizationRole,
   WorkspaceRole
 }
-import com.pennsieve.models.Feature.{ ConceptsFeature }
+import com.pennsieve.models.Feature.ConceptsFeature
 import com.pennsieve.models.{ Feature, Role }
-import org.scalatest.{ Matchers, WordSpec }
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import shapeless.syntax.inject._
 
 import scala.concurrent.duration.DurationInt
 
-class ExtractorSpec extends WordSpec with Matchers {
+class ExtractorSpec extends AnyWordSpec with Matchers {
 
   "extractor" should {
 
