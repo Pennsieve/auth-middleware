@@ -3,7 +3,11 @@
 package com.pennsieve.auth.middleware
 
 import com.pennsieve.models.Role
-import com.pennsieve.auth.middleware._
+
+// This is only needed for compiling a version that uses Circe 0.11.
+// It can be deleted when only version of Circe required is >= 0.12.
+// (That is, when no longer compiling for Scala 2.12.)
+import com.pennsieve.scala.Compatibility._
 import com.pennsieve.auth.middleware.DatasetPermission._
 import com.pennsieve.auth.middleware.Jwt.{
   DatasetRole,
@@ -11,23 +15,17 @@ import com.pennsieve.auth.middleware.Jwt.{
   WorkspaceRole
 }
 import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
-//import com.pennsieve.auth.middleware.WorkspacePermission.{
-//  ManageQueries,
-//  ViewDashboard
-//}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.EitherValues._
 import com.pennsieve.auth.middleware.Resources.readClaim
 import com.pennsieve.models.{ CognitoId, Feature }
-import com.pennsieve.utilities.circe._
-import io.circe.generic.auto._
-import io.circe._
 import io.circe.parser._
-import io.circe.syntax._
 import java.time.Instant
 import java.util.UUID
 
 import pdi.jwt.{ JwtCirce, JwtClaim }
 import shapeless.syntax.inject._
-import org.scalatest.{ Matchers, WordSpec }
 
 import scala.concurrent.duration.DurationInt
 
@@ -35,7 +33,7 @@ object TestConfig extends Jwt.Config {
   override val key: String = "testkey"
 }
 
-class JwtSpec extends WordSpec with Matchers {
+class JwtSpec extends AnyWordSpec with Matchers {
 
   implicit val config = TestConfig
 
@@ -62,12 +60,12 @@ class JwtSpec extends WordSpec with Matchers {
       val claim = Jwt.generateClaim(content, 10.seconds)
       val token = Jwt.generateToken(claim)
 
-      Jwt.parseClaim(token).right.get.content shouldEqual content
+      Jwt.parseClaim(token).value.content shouldEqual content
     }
 
     "decode a user claim with an explicit Cognito session present" in {
       val jsonClaim = readClaim("claim_with_explicit_session.json")
-      val claim = decode[ClaimType](jsonClaim).right.get
+      val claim = decode[ClaimType](jsonClaim).value
       claim.isInstanceOf[UserClaim] should be(true)
       val userClaim = claim.asInstanceOf[UserClaim]
       val cognito = userClaim.cognito.get
@@ -80,7 +78,7 @@ class JwtSpec extends WordSpec with Matchers {
 
     "decode a user claim with no Cognito session present" in {
       val jsonClaim = readClaim("claim_no_session.json")
-      val claim = decode[ClaimType](jsonClaim).right.get
+      val claim = decode[ClaimType](jsonClaim).value
       claim.isInstanceOf[UserClaim] should be(true)
       val userClaim = claim.asInstanceOf[UserClaim]
       userClaim.cognito should be(None)
@@ -138,7 +136,7 @@ class JwtSpec extends WordSpec with Matchers {
       val json =
         readClaim("claim_with_unsupported_features.json")
       val claim = JwtClaim(
-        content = Jwt.printer.pretty(parse(json).right.get),
+        content = Jwt.printer.print(parse(json).value),
         expiration =
           Some(Instant.now.plusSeconds(10.seconds.toSeconds).getEpochSecond),
         issuedAt = Some(Instant.now.getEpochSecond)
@@ -147,7 +145,7 @@ class JwtSpec extends WordSpec with Matchers {
       val token =
         Jwt.Token(JwtCirce.encode(claim, config.key, config.algorithm))
 
-      val parsedClaim = Jwt.parseClaim(token).right.get
+      val parsedClaim = Jwt.parseClaim(token).value
 
       val features: List[Feature] = Extractor
         .getEnabledFeaturesFromClaim(OrganizationId(1), parsedClaim)
@@ -178,7 +176,7 @@ class JwtSpec extends WordSpec with Matchers {
       val claim = Jwt.generateClaim(content: ClaimType, 10.seconds)
       val token = Jwt.generateToken(claim)
 
-      val parsedClaim: ClaimType = Jwt.parseClaim(token).right.get.content
+      val parsedClaim: ClaimType = Jwt.parseClaim(token).value.content
 
       parsedClaim match {
         case user: UserClaim => user shouldEqual content

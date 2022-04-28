@@ -3,10 +3,10 @@
 package com.pennsieve.auth.middleware
 
 import com.pennsieve.models.Role
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-import org.scalatest.{ Matchers, WordSpec }
-
-class PermissionSpec extends WordSpec with Matchers {
+class PermissionSpec extends AnyWordSpec with Matchers {
 
   "permissions" should {
     "be accepted if the role has a given permission" in {

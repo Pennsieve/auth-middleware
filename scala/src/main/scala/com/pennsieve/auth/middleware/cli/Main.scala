@@ -139,7 +139,7 @@ object Main {
 
   def main(arguments: Array[String]): Unit = {
 
-    val args = Args.parse(arguments)
+    val args = Args.parse(arguments.toIndexedSeq)
 
     val config: Config = new Config {
       val key = args.key()

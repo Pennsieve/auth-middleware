@@ -3,6 +3,10 @@
 package com.pennsieve.auth.middleware
 
 import com.pennsieve.utilities.circe._
+// This is only needed for compiling a version that uses Circe 0.11.
+// It can be deleted when only version of Circe required is >= 0.12.
+// (That is, when no longer compiling for Scala 2.12.)
+import com.pennsieve.scala.Compatibility._
 
 import com.pennsieve.models.{ Feature, Role => PennsieveRole }
 import io.circe.{ Decoder, Encoder, Json, Printer }
@@ -83,7 +87,7 @@ object Jwt {
     def toJwtClaim: JwtClaim = {
 
       JwtClaim(
-        content = printer.pretty(content.asJson),
+        content = printer.print(content.asJson),
         expiration = Some(expiration.getEpochSecond),
         issuedAt = Some(issuedAt.getEpochSecond)
       )

@@ -11,23 +11,23 @@ import com.pennsieve.auth.middleware.Jwt.{
   Token
 }
 import com.pennsieve.auth.middleware.Jwt.Role.RoleIdentifier
-
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.{ Authorization, OAuth2BearerToken }
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-
 import io.circe.generic.auto._
+import org.scalatest.wordspec.AnyWordSpec
 import shapeless.syntax.inject._
 
 import scala.concurrent.duration._
-
 import java.time.Instant
+import org.scalatest.matchers.should.Matchers
 
-import org.scalatest.{ Matchers, WordSpec }
-
-class AkkaDirectiveSpec extends WordSpec with Matchers with ScalatestRouteTest {
+class AkkaDirectiveSpec
+    extends AnyWordSpec
+    with Matchers
+    with ScalatestRouteTest {
 
   implicit val config = TestConfig
 
