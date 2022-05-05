@@ -52,6 +52,12 @@ information. The following are two examples of valid claims.
 
 ## Releasing a new version
 
+### Set the new version
+Update these files:
+- `VERSION`
+- `python/auth_middleware/version.py`
+
+### Publish the release
 Run `make release` to publish a new release of `auth-middleware` to Nexus
 
 ## Differences between Python and Scala libraries
