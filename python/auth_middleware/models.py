@@ -73,6 +73,7 @@ class Role(ModelType):
 
 
 class RoleType(ModelType):
+    GUEST = "guest"
     VIEWER = "viewer"
     EDITOR = "editor"
     MANAGER = "manager"
@@ -90,7 +91,8 @@ class RoleType(ModelType):
 
     @classmethod
     def role_permissions(cls):
-        viewer = [
+        guest = []
+        viewer = guest + [
             OrganizationLevelPermission.CREATE_DATASET_FROM_TEMPLATE,
             DatasetPermission.VIEW_GRAPH_SCHEMA,
             DatasetPermission.VIEW_FILES,
@@ -137,6 +139,7 @@ class RoleType(ModelType):
             DatasetPermission.REQUEST_CANCEL_PUBLISH_REVISE,
         ]
         return {
+            cls.GUEST: guest,
             cls.VIEWER: viewer,
             cls.EDITOR: editor,
             cls.MANAGER: manager,
