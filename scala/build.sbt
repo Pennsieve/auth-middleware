@@ -1,7 +1,12 @@
 lazy val akkaHttpVersion = "10.1.11"
 lazy val akkaVersion     = "2.6.5"
-lazy val pennsieveCoreVersion = "166-27f7fae"
 lazy val osLibVersion    = "0.3.3"
+
+lazy val pennsieveCoreVersion = SettingKey[String]("pennsieveCoreVersion")
+pennsieveCoreVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
+  case Some((2, 12)) => "166-27f7fae"
+  case _ => "230-d06f311"
+})
 
 lazy val circeVersion = SettingKey[String]("circeVersion")
 circeVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
@@ -61,7 +66,7 @@ lazy val root = (project in file("."))
       "com.beachape" %% "enumeratum" % enumeratumVersion.value,
       "com.beachape" %% "enumeratum-circe" % enumeratumVersion.value,
 
-      "com.pennsieve" %% "core-models" % pennsieveCoreVersion,
+      "com.pennsieve" %% "core-models" % pennsieveCoreVersion.value,
       "com.pennsieve" %% "utilities" % "4-55953e4",
 
       jwtCirceModuleID.value,
