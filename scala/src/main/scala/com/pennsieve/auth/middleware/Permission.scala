@@ -54,6 +54,12 @@ object OrganizationLevelPermission {
 
 object Permission {
   private def rolePermissions(role: Role): Set[Permission] = role match {
+    // Guest is the lowest role and grants no dataset/organization
+    // permissions. Without this case, hasPermission(Guest)(_) throws a
+    // MatchError: Role.Guest was added to the enum after this match was
+    // written, and the match was never updated (the Python auth-middleware
+    // lib has always had `guest = []`). Mirror that here.
+    case Guest => Set.empty
     case Viewer =>
       Set(
         OrganizationLevelPermission.CreateDatasetFromTemplate,

@@ -2,40 +2,17 @@ lazy val akkaHttpVersion = "10.1.11"
 lazy val akkaVersion     = "2.6.5"
 lazy val osLibVersion    = "0.3.3"
 
-lazy val pennsieveCoreVersion = SettingKey[String]("pennsieveCoreVersion")
-pennsieveCoreVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
-  case Some((2, 12)) => "166-27f7fae"
-  case _ => "230-d06f311"
-})
+// Scala 2.12 cross-build dropped (2.13 only); per-version settings flattened
+// to their 2.13 values. core-models bumped to a version that includes
+// Role.Guest (added 2022-10), which the previously-pinned core-models predated.
+lazy val pennsieveCoreVersion = "436-bb30af9"
+lazy val circeVersion         = "0.14.1"
+lazy val enumeratumVersion    = "1.7.0"
+lazy val scallopVersion       = "4.1.0"
+lazy val jwtCirceModuleID: ModuleID = "com.github.jwt-scala" %% "jwt-circe" % "9.0.5"
 
-lazy val circeVersion = SettingKey[String]("circeVersion")
-circeVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
-  case Some((2, 12)) => "0.11.1"
-  case _ => "0.14.1"
-})
-
-lazy val enumeratumVersion = SettingKey[String]("enumeratumVersion")
-enumeratumVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
-  case Some((2, 12)) => "1.5.15"
-  case _ => "1.7.0"
-})
-
-lazy val scallopVersion = SettingKey[String]("scallopVersion")
-scallopVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
-  case Some((2, 12)) => "3.2.0"
-  case _ => "4.1.0"
-})
-
-lazy val jwtCirceModuleID = SettingKey[ModuleID]("jwtCirceModuleID")
-jwtCirceModuleID := (CrossVersion.partialVersion(scalaVersion.value) match {
-  case Some((2, 12)) => "com.pauldijou" %% "jwt-circe" % "2.1.0"
-  // The groupId changed in version 6.0
-  case _ => "com.github.jwt-scala" %% "jwt-circe" % "9.0.5"
-})
-
-lazy val scala212 = "2.12.6"
 lazy val scala213 = "2.13.8"
-lazy val supportedScalaVersions = List(scala212, scala213)
+lazy val supportedScalaVersions = List(scala213)
 
 val assemblyJarPath = taskKey[Unit]("Call assembly and get the JAR file path.")
 
@@ -44,7 +21,7 @@ lazy val root = (project in file("."))
   .settings(
     inThisBuild(List(
       organization := "com.pennsieve",
-      scalaVersion := scala212,
+      scalaVersion := scala213,
       version := sys.props.get("version").getOrElse("bootstrap-SNAPSHOT"),
       crossScalaVersions := supportedScalaVersions,
       scalacOptions ++= Seq(
@@ -63,16 +40,16 @@ lazy val root = (project in file("."))
       Resolver.sonatypeRepo("snapshots")
     ),
     libraryDependencies ++= Seq(
-      "com.beachape" %% "enumeratum" % enumeratumVersion.value,
-      "com.beachape" %% "enumeratum-circe" % enumeratumVersion.value,
+      "com.beachape" %% "enumeratum" % enumeratumVersion,
+      "com.beachape" %% "enumeratum-circe" % enumeratumVersion,
 
-      "com.pennsieve" %% "core-models" % pennsieveCoreVersion.value,
+      "com.pennsieve" %% "core-models" % pennsieveCoreVersion,
       "com.pennsieve" %% "utilities" % "4-55953e4",
 
-      jwtCirceModuleID.value,
-      "io.circe" %% "circe-core" % circeVersion.value,
-      "io.circe" %% "circe-generic-extras" % circeVersion.value,
-      "io.circe" %% "circe-parser" % circeVersion.value,
+      jwtCirceModuleID,
+      "io.circe" %% "circe-core" % circeVersion,
+      "io.circe" %% "circe-generic-extras" % circeVersion,
+      "io.circe" %% "circe-parser" % circeVersion,
       "com.chuusai" %% "shapeless" % "2.3.3",
 
       "com.lihaoyi" %% "os-lib" % "0.3.0",
@@ -83,7 +60,7 @@ lazy val root = (project in file("."))
       "com.typesafe.akka" %% "akka-stream" % akkaVersion % Test,
       "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
 
-      "org.rogach" %% "scallop" % scallopVersion.value,
+      "org.rogach" %% "scallop" % scallopVersion,
 
       "org.scalatest" %% "scalatest" % "3.2.11" % Test,
     ),
