@@ -1,4 +1,3 @@
-version: '3.5'
 services:
   auth_middleware_test:
     image: pennsieve/auth_middleware-test:${VERSION}
@@ -21,4 +20,3 @@ services:
     command: ["twine", "upload", "dist/*"]
 networks:
   auth_middleware:
-    name: auth_middleware

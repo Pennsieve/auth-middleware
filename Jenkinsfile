@@ -12,62 +12,74 @@ node("executor") {
 
     def releaseVersion = (env.TAG_NAME ==~ /^v\d+\.\d+\.\d+$/) ? env.TAG_NAME.substring(1) : null
 
-    stage("Build") {
-        parallel(
-            "Python": {
-                dir("python") {
-                    sh "make build-release-container"
-                }
-            },
+    // Agents are reused between builds, and the branch and PR builds of a change
+    // can share one. A compose project per build keeps their containers apart.
+    def composeProject = env.BUILD_TAG.toLowerCase().replaceAll(/[^a-z0-9_-]/, "-")
 
-            "Scala": {
-                dir("scala") {
-                    sh "sbt clean compile"
+    withEnv(["COMPOSE_PROJECT_NAME=${composeProject}"]) {
+        try {
+            stage("Build") {
+                parallel(
+                    "Python": {
+                        dir("python") {
+                            sh "make build-release-container"
+                        }
+                    },
+
+                    "Scala": {
+                        dir("scala") {
+                            sh "sbt clean compile"
+                        }
+                    }
+                )
+            }
+
+            stage("Test") {
+                parallel(
+                    "Python": {
+                        dir("python") {
+                            sh "make ci-test"
+                        }
+                    },
+
+                    "Scala": {
+                        dir("scala") {
+                            try {
+                                sh "sbt test"
+                            } finally {
+                                junit '**/target/test-reports/*.xml'
+                            }
+                        }
+                    }
+                )
+            }
+
+            if (releaseVersion) {
+                stage("Release ${releaseVersion}") {
+                    def fileVersion = readFile("VERSION").trim()
+                    if (fileVersion != releaseVersion) {
+                        error("Tag v${releaseVersion} doesn't match VERSION (${fileVersion})")
+                    }
+                    parallel(
+                        "Python": {
+                            dir("python") {
+                                // set +x: Jenkins traces sh commands, which would print the token.
+                                sh "set +x; export TWINE_PASSWORD=\$(${codeArtifactToken}); VERSION=${releaseVersion} make ci-release"
+                            }
+                        },
+
+                        "Scala": {
+                            dir("scala") {
+                                sh "sbt -Dversion=${releaseVersion} publish"
+                            }
+                        }
+                    )
                 }
             }
-        )
-    }
-
-    stage("Test") {
-        parallel(
-            "Python": {
-                dir("python") {
-                    sh "make ci-test"
-                }
-            },
-
-            "Scala": {
-                dir("scala") {
-                    try {
-                        sh "sbt test"
-                    } finally {
-                        junit '**/target/test-reports/*.xml'
-                    }
-                }
+        } finally {
+            dir("python") {
+                sh "docker-compose down --remove-orphans || true"
             }
-        )
-    }
-
-    if (releaseVersion) {
-        stage("Release ${releaseVersion}") {
-            def fileVersion = readFile("VERSION").trim()
-            if (fileVersion != releaseVersion) {
-                error("Tag v${releaseVersion} doesn't match VERSION (${fileVersion})")
-            }
-            parallel(
-                "Python": {
-                    dir("python") {
-                        // set +x: Jenkins traces sh commands, which would print the token.
-                        sh "set +x; export TWINE_PASSWORD=\$(${codeArtifactToken}); VERSION=${releaseVersion} make ci-release"
-                    }
-                },
-
-                "Scala": {
-                    dir("scala") {
-                        sh "sbt -Dversion=${releaseVersion} publish"
-                    }
-                }
-            )
         }
     }
 }
