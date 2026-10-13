@@ -17,6 +17,6 @@ services:
       - TWINE_USERNAME=aws
       - TWINE_PASSWORD
       - TWINE_REPOSITORY_URL=https://pennsieve-932986170183.d.codeartifact.us-east-1.amazonaws.com/pypi/pypi/
-    command: ["twine", "upload", "dist/*"]
+    command: ["/opt/twine/bin/twine", "upload", "dist/*"]
 networks:
   auth_middleware:
