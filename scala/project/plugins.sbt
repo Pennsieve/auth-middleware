@@ -3,3 +3,5 @@ addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "1.6.0-RC4")
 addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.0.0")
 
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.9")
+
+addSbtPlugin("no.arktekk.sbt" % "aether-deploy" % "0.31.0")

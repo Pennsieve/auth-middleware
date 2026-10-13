@@ -52,13 +52,12 @@ information. The following are two examples of valid claims.
 
 ## Releasing a new version
 
-### Set the new version
-Update these files:
-- `VERSION`
-- `python/auth_middleware/version.py`
+On an up-to-date `main`, run `make release`. It asks for the new version, writes it to `VERSION` and `python/auth_middleware/version.py`, commits, and pushes a `vX.Y.Z` tag. Jenkins builds the tag and publishes both libraries to Pennsieve's AWS CodeArtifact:
 
-### Publish the release
-Run `make release` to publish a new release of `auth-middleware` to Nexus
+- **Scala:** `com.pennsieve %% auth-middleware % "X.Y.Z"` in the `maven` repository
+- **Python:** `auth-middleware==X.Y.Z` in the `pypi` repository
+
+Only Jenkins can publish. A version can't be published twice.
 
 ## Differences between Python and Scala libraries
 
@@ -94,10 +93,10 @@ else:
   do_other_stuff()
 ```
 
-## Installation from Nexus
-The Python library can be installed with pip from the private PyPI repository
-on Nexus using:
+## Installation
+
+The Python library is in Pennsieve's AWS CodeArtifact. After `assume-role non-prod admin`, run `ps-codeartifact-login` from [cli-utils](https://github.com/Pennsieve/cli-utils). It points pip at CodeArtifact for the current shell. Then:
 
 ```bash
-pip install auth-middleware --extra-index-url "https://$PENNSIEVE_NEXUS_USER:$PENNSIEVE_NEXUS_PW@nexus.pennsieve.cc/repository/pypi-prod/simple"
+pip install auth-middleware
 ```
