@@ -13,10 +13,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    # TWINE_PASSWORD is a CodeArtifact token (see the Jenkinsfile's release stage).
     environment:
-      - PENNSIEVE_NEXUS_USER
-      - PENNSIEVE_NEXUS_PW
-    command: ["twine", "upload", "dist/*", "--repository-url", "https://nexus.pennsieve.cc/repository/pypi-prod/", "-u", "${PENNSIEVE_NEXUS_USER}", "-p", "${PENNSIEVE_NEXUS_PW}"]
+      - TWINE_USERNAME=aws
+      - TWINE_PASSWORD
+      - TWINE_REPOSITORY_URL=https://pennsieve-932986170183.d.codeartifact.us-east-1.amazonaws.com/pypi/pypi/
+    command: ["twine", "upload", "dist/*"]
 networks:
   auth_middleware:
     name: auth_middleware

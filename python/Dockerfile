@@ -5,5 +5,7 @@ WORKDIR /auth_middleware
 COPY auth_middleware/ ./auth_middleware/
 COPY Makefile Pipfile Pipfile.lock setup.py MANIFEST.in README.md ./
 RUN pipenv install --system --dev
-RUN python setup.py install
-RUN python setup.py bdist_wheel
+# Built by pip in an isolated environment: the packaging version pinned in
+# Pipfile.lock is too old for current setuptools, which breaks setup.py.
+RUN pip install --no-deps .
+RUN pip wheel --no-deps --wheel-dir dist .

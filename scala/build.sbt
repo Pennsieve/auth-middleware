@@ -11,7 +11,24 @@ lazy val enumeratumVersion    = "1.7.0"
 lazy val scallopVersion       = "4.1.0"
 lazy val jwtCirceModuleID: ModuleID = "com.github.jwt-scala" %% "jwt-circe" % "9.0.5"
 
-lazy val scala213 = "2.13.8"
+lazy val scala213 = "2.13.16"
+
+// Pennsieve packages live in AWS CodeArtifact (pennsieve-cc), `maven` repository.
+// Access is IAM: the build exchanges the active AWS credentials -- the Jenkins
+// agent's instance role, or `assume-role non-prod admin` locally -- for a
+// short-lived token. CODEARTIFACT_AUTH_TOKEN, if set, is used instead.
+lazy val codeArtifactHost = "pennsieve-932986170183.d.codeartifact.us-east-1.amazonaws.com"
+lazy val codeArtifactRepo = s"https://$codeArtifactHost/maven/maven/"
+lazy val codeArtifactToken: String = sys.env.get("CODEARTIFACT_AUTH_TOKEN").getOrElse {
+  import scala.sys.process._
+  val cmd = Seq("aws", "codeartifact", "get-authorization-token", "--domain", "pennsieve",
+    "--domain-owner", "932986170183", "--region", "us-east-1",
+    "--query", "authorizationToken", "--output", "text")
+  scala.util.Try(cmd.!!(ProcessLogger(_ => ())).trim).getOrElse {
+    println("[warn] No CodeArtifact token: AWS credentials missing or not allowed. Run assume-role non-prod admin.")
+    ""
+  }
+}
 lazy val supportedScalaVersions = List(scala213)
 
 val assemblyJarPath = taskKey[Unit]("Call assembly and get the JAR file path.")
@@ -33,12 +50,7 @@ lazy val root = (project in file("."))
       "Copyright (c) 2021 University of Pennsylvania. All Rights Reserved."
     )),
     headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment),
-    resolvers ++= Seq(
-      "Pennsieve Releases" at "https://nexus.pennsieve.cc/repository/maven-releases",
-      "Pennsieve Snapshots" at "https://nexus.pennsieve.cc/repository/maven-snapshots",
-      Resolver.sonatypeRepo("releases"),
-      Resolver.sonatypeRepo("snapshots")
-    ),
+    resolvers += "pennsieve" at codeArtifactRepo,
     libraryDependencies ++= Seq(
       "com.beachape" %% "enumeratum" % enumeratumVersion,
       "com.beachape" %% "enumeratum-circe" % enumeratumVersion,
@@ -64,22 +76,13 @@ lazy val root = (project in file("."))
 
       "org.scalatest" %% "scalatest" % "3.2.11" % Test,
     ),
-    publishTo := {
-      val nexus = "https://nexus.pennsieve.cc/repository"
-
-      if (isSnapshot.value) {
-        Some("Nexus Realm" at s"$nexus/maven-snapshots")
-      } else {
-        Some("Nexus Realm" at s"$nexus/maven-releases")
-      }
-    },
+    publishTo := Some("pennsieve" at codeArtifactRepo),
     publishMavenStyle := true,
+    // sbt's own publisher writes no maven-metadata.xml, so its releases stay
+    // Unfinished in CodeArtifact; sbt-aether-deploy publishes like Maven.
+    overridePublishSettings,
     scalafmtOnCompile := true,
-    credentials += Credentials("Sonatype Nexus Repository Manager",
-      "nexus.pennsieve.cc",
-      sys.env("PENNSIEVE_NEXUS_USER"),
-      sys.env("PENNSIEVE_NEXUS_PW")
-    ),
+    credentials += Credentials("pennsieve/maven", codeArtifactHost, "aws", codeArtifactToken),
     assembly / test := {},  // Skip running tests during JAR assembly
     assemblyJarPath := {
       println(assembly.value.getAbsolutePath)

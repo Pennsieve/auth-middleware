@@ -13,7 +13,7 @@ help:
 	@echo "make clean-min -- clan up non-docker artifacts"
 	@echo "make install -- build package into current Python's site-packages"
 	@echo "make dist -- create a publishable artifact"
-	@echo "make release -- publish artifact to private nexus PyPI repository"
+	@echo "make release -- publish artifact to CodeArtifact (TWINE_PASSWORD = CodeArtifact token)"
 	@echo "make ci-release -- release using container"
 
 ci-test: clean-min build-test-container
@@ -66,8 +66,9 @@ dist: install
 	pipenv run python setup.py bdist_wheel
 
 release: dist
-	echo "Releasing to private nexus pypi repository"
-	pipenv run twine upload dist/*.whl --repository-url https://nexus.pennsieve.cc/repository/pypi-prod/ -u "${PENNSIEVE_NEXUS_USER}" -p "${PENNSIEVE_NEXUS_PW}"
+	echo "Releasing to CodeArtifact"
+	TWINE_USERNAME=aws TWINE_REPOSITORY_URL=https://pennsieve-932986170183.d.codeartifact.us-east-1.amazonaws.com/pypi/pypi/ \
+		pipenv run twine upload dist/*.whl
 
 ci-release: clean-min build-release-container
 	@VERSION=${VERSION} docker-compose up --exit-code-from=auth_middleware auth_middleware

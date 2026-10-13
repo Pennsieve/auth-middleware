@@ -4,9 +4,10 @@
 #
 # Release script.
 #
-# Input and validate and new version, and write it to the
-# root VERSION file. Run both the Scala and Python release job
-# and commit any changes.
+# Input and validate a new version, write it to the root VERSION
+# file and the Python package, commit, and push a vX.Y.Z tag.
+# Jenkins builds the tag and publishes both libraries to AWS
+# CodeArtifact.
 #
 #############################################################
 
@@ -24,11 +25,6 @@ if [ "main" != "$BRANCH" ]; then
     exit 1
 fi
 
-if ! nc -zv -G 3 nexus.pennsieve.cc 443 > /dev/null 2>&1; then
-    echo "Could not connect to nexus.pennsieve.cc - are you on the VPN?"
-    exit 1
-fi
-
 echo "Current version is $(cat VERSION)"
 
 read -p "Enter a new version: " VERSION
@@ -39,14 +35,13 @@ if ! [[ "$VERSION" =~ ^[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+ ]]; then
 fi
 
 echo $VERSION > VERSION
-
-VERSION="$VERSION" make -C python release
-VERSION="$VERSION" make -C scala release
+echo "__version__ = \"${VERSION}\"" > python/auth_middleware/version.py
 
 echo "Committing version $VERSION..."
 git commit -a -m "Version $VERSION"
+git tag "v$VERSION"
 
-echo "Pushing $VERSION to \"main\"..."
-git push origin main
+echo "Pushing $VERSION and tag v$VERSION to \"main\"..."
+git push origin main "v$VERSION"
 
-echo "Done"
+echo "Done: Jenkins publishes $VERSION from the tag build."
