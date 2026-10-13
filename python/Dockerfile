@@ -9,3 +9,8 @@ RUN pipenv install --system --dev
 # Pipfile.lock is too old for current setuptools, which breaks setup.py.
 RUN pip install --no-deps .
 RUN pip wheel --no-deps --wheel-dir dist .
+
+# twine for the release upload, in its own environment: the twine pinned with
+# the dev tools in Pipfile.lock (3.2.0) no longer starts and can't read the
+# metadata current setuptools writes.
+RUN python -m venv /opt/twine && /opt/twine/bin/pip install --no-cache-dir twine==6.2.0
